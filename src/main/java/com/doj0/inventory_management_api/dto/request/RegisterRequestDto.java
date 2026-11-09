@@ -4,7 +4,7 @@ import com.doj0.inventory_management_api.enums.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,9 +32,6 @@ public class RegisterRequestDto {
     @NotBlank(message = "Confirmation password is required")
     private String confirmationPassword;
 
-    @Pattern (
-        regexp = "ADMIN|USER|MODERATOR", 
-        message = "Role must be one of: ADMIN, STAFF"
-    )
+    @NotNull(message = "User role is required")
     private Role role;
 }

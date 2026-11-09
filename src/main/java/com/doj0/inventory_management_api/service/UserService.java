@@ -36,6 +36,20 @@ public class UserService {
             .collect(Collectors.toList());
     }
 
+    public UserResponseDto getUserById(String userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        return UserResponseDto.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .email(user.getEmail())
+            .roles(user.getRoles() != null ? new ArrayList<>(user.getRoles()) : List.of())
+            .createdAt(user.getCreatedAt())
+            .updatedAt(user.getUpdatedAt())
+            .build();
+    }
+
     public void register(RegisterRequestDto requestDto) {
         Boolean existing = userRepository.findByEmail(requestDto.getEmail()).isPresent();
         
@@ -55,5 +69,12 @@ public class UserService {
             .build();
 
         userRepository.save(user);
+    }
+
+    public void deleteUser(String userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        userRepository.delete(user);
     }
 }

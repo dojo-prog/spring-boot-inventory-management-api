@@ -24,14 +24,7 @@ public class UserService {
 
     public List<UserResponseDto> getUsers() {
         return userRepository.findAll().stream()
-            .map(user -> UserResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .roles(user.getRoles() != null ? new ArrayList<>(user.getRoles()) : List.of())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .build()
+            .map(user -> mapToDto(user)
             )
             .collect(Collectors.toList());
     }
@@ -40,14 +33,7 @@ public class UserService {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        return UserResponseDto.builder()
-            .id(user.getId())
-            .name(user.getName())
-            .email(user.getEmail())
-            .roles(user.getRoles() != null ? new ArrayList<>(user.getRoles()) : List.of())
-            .createdAt(user.getCreatedAt())
-            .updatedAt(user.getUpdatedAt())
-            .build();
+        return mapToDto(user);
     }
 
     public void register(RegisterRequestDto requestDto) {
@@ -76,5 +62,18 @@ public class UserService {
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         userRepository.delete(user);
+    }
+
+    // Helpers
+
+    private UserResponseDto mapToDto(User user) {
+        return UserResponseDto.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .email(user.getEmail())
+            .roles(user.getRoles() != null ? new ArrayList<>(user.getRoles()) : List.of())
+            .createdAt(user.getCreatedAt())
+            .updatedAt(user.getUpdatedAt())
+            .build();
     }
 }

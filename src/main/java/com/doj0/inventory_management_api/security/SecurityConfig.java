@@ -38,7 +38,7 @@ public class SecurityConfig {
         httpSecurity
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/*/auth/**").permitAll()
+                .requestMatchers("/api/*/auth/login").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()   
             )
@@ -84,7 +84,7 @@ public class SecurityConfig {
             response, 
             HttpServletResponse.SC_UNAUTHORIZED, 
             "Unauthorized", 
-            "Authentication is requiered to access this resource"
+            "Authentication is required to access this resource"
         );
     }
 

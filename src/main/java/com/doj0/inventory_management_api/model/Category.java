@@ -21,9 +21,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity 
+@Data 
 @Table(name = "categories")
 @Builder 
 @NoArgsConstructor 
@@ -37,6 +39,9 @@ public class Category {
 
     @Column(nullable = false, unique = true, length = 50)
     private String name; 
+
+    @Column(nullable = false, unique = true)
+    private String slug; 
 
     @Column(nullable = true, length = 360)
     private String description;

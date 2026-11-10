@@ -1,6 +1,7 @@
 package com.doj0.inventory_management_api.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import org.openapitools.jackson.nullable.JsonNullable;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,22 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor 
 @AllArgsConstructor 
 public class UpdateSupplierRequestDto {
-    @NotBlank(message = "Supplier name is required (e.g. Company Name)")
     @Size(max = 200, message = "Supplier name cannot exceed 200 characters")
     private String name;
     
     @Size(max = 150, message = "Contact persion cannot exceed 150 characters")
-    private String contactPerson;
+    private JsonNullable<String> contactPerson;
     
     @Size(max = 150, message = "Email cannot exceed 150 characters")
-    private String email;
+    private JsonNullable<String> email;
 
     @Pattern (
         regexp = "^(09|\\+639|639)\\d{9}$", 
         message = "Invalid Philippine mobile number format. Use 09XXXXXXXXX or +639XXXXXXXXX"
     )
-    private String phone;
+    private JsonNullable<String> phone;
 
     @Size(max = 150, message = "Address cannot exceed 400 characters")
-    private String address;
+    private JsonNullable<String> address;
 }

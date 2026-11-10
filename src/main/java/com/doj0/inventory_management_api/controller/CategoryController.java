@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,8 +28,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping 
-    public ResponseEntity<?> getCategories() {
-        List<Category> categories = categoryService.getCategories();
+    public ResponseEntity<?> getCategories(Pageable pageable) {
+        Page<Category> categories = categoryService.getCategories(pageable);
 
         return ResponseEntity.ok(
             ApiResponse.success(

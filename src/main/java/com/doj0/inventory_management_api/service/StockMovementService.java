@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.doj0.inventory_management_api.exception.ResourceNotFoundException;
@@ -16,8 +16,8 @@ public class StockMovementService {
 
     private final StockMovementRepository stockMovementRepository;
 
-    public List<StockMovement> getProductStockMovements(String productId) {
-        return stockMovementRepository.findByProductId(productId);
+    public Page<StockMovement> getProductStockMovements(String productId, Pageable pageable) {
+        return stockMovementRepository.findByProductId(productId, pageable);
     }
 
     public StockMovement getStockMovementById(String stockMovementId) {

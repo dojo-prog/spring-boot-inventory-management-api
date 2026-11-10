@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +24,10 @@ public class StockMovementController {
 
     @GetMapping("/products/{productId}/stock-movements") 
     public ResponseEntity<?> getProductStockMovements(
-        @PathVariable String productId
+        @PathVariable String productId,
+        Pageable pageable
     ) {
-        List<StockMovement> productStockMovements =stockMovementService.getProductStockMovements(productId);
+        Page<StockMovement> productStockMovements = stockMovementService.getProductStockMovements(productId, pageable);
 
         return ResponseEntity.ok(
             ApiResponse.success(

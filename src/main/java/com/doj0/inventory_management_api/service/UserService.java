@@ -3,8 +3,9 @@ package com.doj0.inventory_management_api.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserResponseDto> getUsers() {
-        return userRepository.findAll().stream()
+    public Page<UserResponseDto> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
             .map(user -> mapToDto(user)
-            )
-            .collect(Collectors.toList());
+            );
     }
 
     public UserResponseDto getUserById(String userId) {

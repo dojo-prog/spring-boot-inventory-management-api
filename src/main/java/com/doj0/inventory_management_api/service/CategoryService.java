@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.doj0.inventory_management_api.dto.request.CreateCategoryRequestDto;
@@ -19,8 +19,8 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public Page<Category> getCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
     }
 
     public Category getCategoryById(String categoryId) {

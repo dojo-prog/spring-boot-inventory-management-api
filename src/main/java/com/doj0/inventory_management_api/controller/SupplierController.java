@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +30,8 @@ public class SupplierController {
     private final SupplierService supplierService;
 
     @GetMapping 
-    public ResponseEntity<?> getSuppliers() {
-        List<Supplier> suppliers = supplierService.getSuppliers();
+    public ResponseEntity<?> getSuppliers(Pageable pageable) {
+        Page<Supplier> suppliers = supplierService.getSuppliers(pageable);
 
         return ResponseEntity.ok(
             ApiResponse.success(

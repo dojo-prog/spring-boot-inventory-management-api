@@ -1,7 +1,7 @@
 package com.doj0.inventory_management_api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,8 +30,8 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize ("hasRole('ADMIN')")
-    public ResponseEntity<?> getUsers() {
-        List<UserResponseDto> users = userService.getUsers();
+    public ResponseEntity<?> getUsers(Pageable pageable) {
+        Page<UserResponseDto> users = userService.getUsers(pageable);
 
         return ResponseEntity.ok(
             ApiResponse.success(

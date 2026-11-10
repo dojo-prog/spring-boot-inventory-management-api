@@ -6,11 +6,16 @@ import org.springframework.stereotype.Service;
 
 import com.doj0.inventory_management_api.dto.request.CreateProductRequestDto;
 import com.doj0.inventory_management_api.dto.request.UpdateProductRequestDto;
+import com.doj0.inventory_management_api.dto.request.UpdateProductStockRequestDto;
+import com.doj0.inventory_management_api.enums.StockMovementType;
 import com.doj0.inventory_management_api.exception.ResourceNotFoundException;
 import com.doj0.inventory_management_api.model.Category;
 import com.doj0.inventory_management_api.model.Product;
+import com.doj0.inventory_management_api.model.StockMovement;
+import com.doj0.inventory_management_api.model.User;
 import com.doj0.inventory_management_api.repository.CategoryRepository;
 import com.doj0.inventory_management_api.repository.ProductRepository;
+import com.doj0.inventory_management_api.repository.StockMovementRepository;
 import com.doj0.inventory_management_api.util.ProductSkuUtils;
 
 import jakarta.transaction.Transactional;
@@ -22,6 +27,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final StockMovementRepository stockMovementRepository;
 
     public List<Product> getProducts() {
         return productRepository.findAll();
@@ -141,5 +147,51 @@ public class ProductService {
         category.removeProduct(product);
 
         productRepository.delete(product);
+    }
+
+    @Transactional 
+    public Product updateProductStock(
+        User currentUser,
+        String productId, 
+        UpdateProductStockRequestDto requestDto
+    ) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        StockMovementType type = requestDto.getType();
+        int currentStock = product.getStockQuantity();
+        int requestedQty = requestDto.getQuantity();
+        int newQuantity;
+
+        if (type == StockMovementType.STOCK_IN) {
+            newQuantity = currentStock + requestedQty;
+        } 
+        else if (type == StockMovementType.STOCK_OUT) {
+            newQuantity = currentStock - requestedQty; 
+
+            if (newQuantity < 0) {
+                throw new IllegalArgumentException("Insufficient stock quantity");
+            }
+        } 
+        else {
+            throw new IllegalArgumentException("Invalid stock movement operation type");
+        }
+
+        product.setStockQuantity(newQuantity);
+
+        StockMovement stockMovement = StockMovement.builder()
+            .product(product)
+            .user(currentUser)
+            .type(type)
+            .quantity(requestedQty)
+            .previousQuantity(currentStock)
+            .newQuantity(newQuantity)
+            .reason(requestDto.getReason())
+            .reference(requestDto.getReference())
+            .build();
+
+        stockMovementRepository.save(stockMovement);
+        
+        return productRepository.save(product); 
     }
 }

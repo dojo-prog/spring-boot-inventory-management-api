@@ -3,7 +3,13 @@ package com.doj0.inventory_management_api.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data 
+@NoArgsConstructor 
+@AllArgsConstructor 
 public class CreateSupplierRequestDto {
     @NotBlank(message = "Supplier name is required (e.g. Company Name)")
     @Size(max = 200, message = "Supplier name cannot exceed 200 characters")

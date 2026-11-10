@@ -16,7 +16,7 @@ public class CreateSupplierRequestDto {
     private String name;
     
     @Size(max = 150, message = "Contact persion cannot exceed 150 characters")
-    private String contact_person;
+    private String contactPerson;
     
     @Size(max = 150, message = "Email cannot exceed 150 characters")
     private String email;

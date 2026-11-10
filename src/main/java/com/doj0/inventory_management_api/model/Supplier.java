@@ -39,8 +39,8 @@ public class Supplier {
     @Column(nullable = false, length = 200)
     private String name;  
 
-    @Column(nullable = true, length = 150)
-    private String contact_person;
+    @Column(name = "contact_person", nullable = true, length = 150)
+    private String contactPerson;
     
     @Column(nullable = true, length = 150)
     private String email;  

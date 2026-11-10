@@ -78,7 +78,6 @@ public class Product {
     private LocalDateTime updatedAt;
 
     // Relationships 
-    @JsonIgnore 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
